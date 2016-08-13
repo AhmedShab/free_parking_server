@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+mongoose.Promise = global.Promise;
 mongoose.connect(dbConfig.getMongoUri(), function error(err) {
   if (err) console.log(err);
   console.log('Database is connected');

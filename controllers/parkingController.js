@@ -17,7 +17,6 @@ module.exports = {
           message: 'Error getting parking.'
         });
       }
-      console.log(parkings);
       return res.json(parkings);
     });
   },
@@ -62,23 +61,25 @@ module.exports = {
   create: function(req, res) {
     var data = req.body;
 
-    console.log(data);
+    // console.log(data);
+
+    // console.log('before saving');
     var parking = new parkingModel({      emailAddress: data.emailAddress,      date : data.date,
       from : data.from,
       to : data.to,
       no_days : data.no_days,
-      homeAddress: data.address    });
+      homeAddress: data.homeAddress    });
 
     parking.save(function(err, parking){
+      // console.log('saving...');
       if(err) {
-        return res.json(500, {
+        return res.status(500).json({
           message: 'Error saving parking',
           error: err
         });
       }
-      return res.json({
-        message: 'saved',
-        _id: parking._id
+      return res.status(200).json({
+        message: 'saved'
       });
     });
   },

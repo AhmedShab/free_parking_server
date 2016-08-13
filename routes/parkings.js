@@ -28,7 +28,7 @@ router.get('/:id', function(req, res) {
 /*
  * POST
  */
-router.post('/', function(req, res) {
+router.post('/parkings', function(req, res) {
     parkingController.create(req, res);
 });
 
