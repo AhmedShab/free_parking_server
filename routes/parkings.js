@@ -8,12 +8,6 @@ var seedParking = require('../seeds/createSeedParking');
  * GET
  */
 
- router.post('/', passport.authenticate('local-signup', {
-     successRedirect: '/parkings',
-     failureRedirect: '/test'
-   })
- );
-
 router.get('/parkings', function(req, res) {
     parkingController.list(req, res);
 });
@@ -39,6 +33,12 @@ router.get('/:id', function(req, res) {
 router.post('/parkings', function(req, res) {
     parkingController.create(req, res);
 });
+
+router.post('/signup', passport.authenticate('local-signup', {
+    successRedirect: '/',
+    failureRedirect: '/'
+  })
+);
 
 /*
  * PUT
