@@ -1,11 +1,19 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 var parkingController = require('../controllers/parkingController.js');
-var seed = require('../seeds/createSeedParking');
+var seedParking = require('../seeds/createSeedParking');
 
 /*
  * GET
  */
+
+ router.post('/', passport.authenticate('local-signup', {
+     successRedirect: '/parkings',
+     failureRedirect: '/test'
+   })
+ );
+
 router.get('/parkings', function(req, res) {
     parkingController.list(req, res);
 });
@@ -14,8 +22,8 @@ router.get('/test', function(req, res) {
     parkingController.test(req, res);
 });
 
-router.get('/seed', function(req, res) {
-    seed.runSeed(req, res);
+router.get('/seedParking', function(req, res) {
+    seedParking.runSeed(req, res);
 });
 
 /*
