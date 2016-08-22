@@ -3,11 +3,17 @@ var router = express.Router();
 var passport = require('passport');
 var parkingController = require('../controllers/parkingController.js');
 var seedParking = require('../seeds/createSeedParking');
+var auth = require('../controllers/auth');
 
 /*
  * GET
  */
 
+router.get('/', auth.isLoggedIn, function(req, res) {
+    res.json({
+      message: "you have successfuly logged in"
+    });
+});
 router.get('/parkings', function(req, res) {
     parkingController.list(req, res);
 });
@@ -36,7 +42,13 @@ router.post('/parkings', function(req, res) {
 
 router.post('/signup', passport.authenticate('local-signup', {
     successRedirect: '/',
-    failureRedirect: '/'
+    failureRedirect: '/test'
+  })
+);
+
+router.post('/login', passport.authenticate('local-login', {
+    successRedirect: '/',
+    failureRedirect: '/test'
   })
 );
 
