@@ -25,10 +25,11 @@ module.exports = {
   list: function(req, res) {
     const search = req.headers.referer.split("=");
     const size = search.length - 1;
-
-    console.log(req);
-
     if (size >= 1) {
+
+      if (search[size].includes("%20")) {
+        search[size] = search[size].split("%20").join(" ");
+      }
 
       // console.log(req.headers.referer);
       parkingModel.find({'city': search[size]}, function(err, parkings){
