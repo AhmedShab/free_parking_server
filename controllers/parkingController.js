@@ -23,14 +23,34 @@ module.exports = {
   * parkingController.list()
   */
   list: function(req, res) {
-    parkingModel.find(function(err, parkings){
-      if(err) {
-        return res.json(500, {
-          message: 'Error getting parking.'
-        });
-      }
-      return res.json(parkings);
-    });
+    const search = req.headers.referer.split("=");
+    const size = search.length - 1;
+
+    console.log(req);
+
+    if (size >= 1) {
+
+      // console.log(req.headers.referer);
+      parkingModel.find({'city': search[size]}, function(err, parkings){
+        if(err) {
+          return res.json(500, {
+            message: 'Error getting parking.'
+          });
+        }
+        return res.json(parkings);
+      });
+    }
+
+    else {
+      parkingModel.find(function(err, parkings){
+        if(err) {
+          return res.json(500, {
+            message: 'Error getting parking.'
+          });
+        }
+        return res.json(parkings);
+      });
+    }
   },
 
   test: function(req, res) {

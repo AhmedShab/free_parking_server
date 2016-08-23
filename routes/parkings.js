@@ -15,7 +15,7 @@ router.get('/', auth.isLoggedIn, function(req, res) {
     });
 });
 router.get('/parkings', function(req, res) {
-    parkingController.list(req, res);
+  parkingController.list(req, res);
 });
 
 router.get('/test', function(req, res) {
