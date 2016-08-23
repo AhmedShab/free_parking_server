@@ -96,6 +96,7 @@ module.exports = {
         to : data.to,
         no_days : data.no_days,
         homeAddress: data.homeAddress,
+        city: googleRes[0].city,
         lat: googleRes[0].latitude,
         lng: googleRes[0].longitude
       });
