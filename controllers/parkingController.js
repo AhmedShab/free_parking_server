@@ -1,4 +1,14 @@
 var parkingModel = require('../models/parkingModel.js');
+var NodeGeocoder = require('node-geocoder');
+
+var options = {
+  provider: 'google',
+
+  // Optional depending on the providers
+  httpAdapter: 'https', // Default
+  apiKey: process.env.GOOGLE_API_KEY, // for Mapquest, OpenCage, Google Premier
+  formatter: null         // 'gpx', 'string', ...
+};
 
 /**
 * parkingController.js
@@ -32,6 +42,12 @@ module.exports = {
         homeAddress: "162B Raroa Rd, Aro Valley, Wellington 6012"
       }
     ];
+    return res.json(result);
+  },
+
+  testGeocoder: function(req, res) {
+
+
     return res.json(result);
   },
 

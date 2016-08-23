@@ -22,6 +22,10 @@ router.get('/test', function(req, res) {
     parkingController.test(req, res);
 });
 
+router.get('/geoCoder', function(req, res) {
+    parkingController.geoCoder(req, res);
+});
+
 router.get('/seedParking', function(req, res) {
     seedParking.runSeed(req, res);
 });
