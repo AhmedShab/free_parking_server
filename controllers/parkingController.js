@@ -10,6 +10,8 @@ var options = {
   formatter: null         // 'gpx', 'string', ...
 };
 
+var geocoder = NodeGeocoder(options);
+
 /**
 * parkingController.js
 *
@@ -47,8 +49,13 @@ module.exports = {
 
   testGeocoder: function(req, res) {
 
-
-    return res.json(result);
+    geocoder.geocode('162B Raroa Rd, Aro Valley, Wellington 6012')
+    .then(function(res) {
+      console.log(res);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
   },
 
   /**
@@ -76,28 +83,41 @@ module.exports = {
   */
   create: function(req, res) {
     var data = req.body;
+    var googleData = [];
 
     // console.log(data);
+    geocoder.geocode(data.homeAddress)
+    .then(function(googleRes) {
 
-    // console.log('before saving');
-    var parking = new parkingModel({      emailAddress: data.emailAddress,      date : data.date,
-      from : data.from,
-      to : data.to,
-      no_days : data.no_days,
-      homeAddress: data.homeAddress    });
-
-    parking.save(function(err, parking){
-      // console.log('saving...');
-      if(err) {
-        return res.status(500).json({
-          message: 'Error saving parking',
-          error: err
-        });
-      }
-      return res.status(200).json({
-        message: 'saved'
+      var parking = new parkingModel({
+        emailAddress: data.emailAddress,
+        date : data.date,
+        from : data.from,
+        to : data.to,
+        no_days : data.no_days,
+        homeAddress: data.homeAddress,
+        lat: googleRes[0].latitude,
+        lng: googleRes[0].longitude
       });
+
+      console.log(parking);
+
+      parking.save(function(err, parking){
+        if(err) {
+          return res.status(500).json({
+            message: 'Error saving parking',
+            error: err
+          });
+        }
+        return res.status(200).json({
+          message: 'saved'
+        });
+      });
+    })
+    .catch(function(err) {
+      console.log(err);
     });
+
   },
 
   /**

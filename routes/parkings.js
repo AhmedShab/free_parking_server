@@ -23,7 +23,7 @@ router.get('/test', function(req, res) {
 });
 
 router.get('/geoCoder', function(req, res) {
-    parkingController.geoCoder(req, res);
+    parkingController.testGeocoder(req, res);
 });
 
 router.get('/seedParking', function(req, res) {
