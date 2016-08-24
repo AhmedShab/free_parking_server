@@ -4,14 +4,16 @@ var passport = require('passport');
 var parkingController = require('../controllers/parkingController.js');
 var seedParking = require('../seeds/createSeedParking');
 var auth = require('../controllers/auth');
+// sign with default (HMAC SHA256)
+var jwt = require('jsonwebtoken');
 
 /*
  * GET
  */
 
-router.get('/', auth.isLoggedIn, function(req, res) {
+router.get('/', function(req, res) {
     res.json({
-      message: "you have successfuly logged in"
+      message: "you have not successfuly logged in"
     });
 });
 router.get('/parkings', function(req, res) {
@@ -33,9 +35,9 @@ router.get('/seedParking', function(req, res) {
 /*
  * GET
  */
-router.get('/:id', function(req, res) {
-    parkingController.show(req, res);
-});
+// router.get('/:id', function(req, res) {
+//     parkingController.show(req, res);
+// });
 
 /*
  * POST
@@ -45,16 +47,30 @@ router.post('/parkings', function(req, res) {
 });
 
 router.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/',
-    failureRedirect: '/test'
+    successRedirect: '/token',
+    failureRedirect: '/'
   })
 );
 
 router.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/',
-    failureRedirect: '/test'
+    successRedirect: '/token',
+    failureRedirect: '/'
   })
 );
+
+router.get('/token',auth.isLoggedIn, function(req, res) {
+  var token = jwt.sign({ foo: 'bar' }, 'shhhhh');
+
+    res.status(200).json({
+      success: true,
+      token: token
+    });
+});
+router.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
+
 
 /*
  * PUT
