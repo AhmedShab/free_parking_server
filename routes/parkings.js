@@ -32,6 +32,10 @@ router.get('/seedParking', function(req, res) {
     seedParking.runSeed(req, res);
 });
 
+router.get('/register', auth.isLoggedIn, function(req, res) {
+    res.status(200).send();
+});
+
 /*
  * GET
  */
